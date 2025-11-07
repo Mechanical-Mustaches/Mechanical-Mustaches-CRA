@@ -8,6 +8,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig;
 
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.math.Matter;
 
 /**
@@ -20,12 +21,20 @@ import swervelib.math.Matter;
  */
 public final class Constants
 {
+  SwerveSubsystem swerve;
+
   public static final Vision USING_VISION = Vision.NO_VISION;
   public static final boolean UPDATE_HEADING_FROM_VISION = false;  //if false heading is only from gyro
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
   public static final double MAX_SPEED  = Units.feetToMeters(14.5);
+
+  public static final double kMaxLinearSpeed = 4;
+  public static final double kMaxAngularSpeed = Units.degreesToRadians(360);
+
+  
+
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
 //  public static final class AutonConstants
@@ -74,19 +83,16 @@ public final class Constants
     public static final int CURRENT_LIMIT = 30;
   }
 
- public class Climber {
-        public static final int MOTOR = 14;
+ public class Elevator {
+        public static final int LEFT_MOTOR = 12;
+        public static final int RIGHT_MOTOR = 20;
+        public static final int BACK_MOTOR = 11;
 
         public static final double RADIANS_PER_REVOLUTION = (Math.PI * 2) / 125;
 
         public static final double P = 0;
         public static final double I = 0;
         public static final double D = 0;
-
-        public static final double KS = 0;
-        public static final double KG = 3.96;
-        public static final double KV = 2.44;
-        public static final double KA = 0.14;
 
         public static final ClosedLoopConfig CLOSED_LOOP_CONFIG = new ClosedLoopConfig()
                 .p(P)

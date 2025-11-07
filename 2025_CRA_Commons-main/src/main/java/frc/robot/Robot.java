@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -17,11 +18,19 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import org.photonvision.PhotonCamera;
 
 public class Robot extends LoggedRobot {
   private Command exampleAuto;
   private RobotContainer theRobotContainer;
   private Timer disabledTimer;
+
+  PhotonCamera cameraRight = new PhotonCamera("RightCamera");
+  PhotonCamera cameraLeft = new PhotonCamera("LeftCamera");
+
+  boolean targetSeen = false;
+  double targetYaw = 0.0;
+
 
   
   public void robotInit() {
@@ -46,6 +55,9 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+
+    SmartDashboard.putBoolean("CameraAprilTagDetection", targetSeen);
+    SmartDashboard.putNumber("CameraAprilTagYaw", targetYaw);
   }
 
   @Override
@@ -91,6 +103,24 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopPeriodic() {
+
+   var results = cameraRight.getAllUnreadResults();
+    if (!results.isEmpty()) {
+        // Camera processed a new frame since last
+        // Get the last one in the list.
+        var result = results.get(results.size() - 1);
+        if (result.hasTargets()) {
+            // At least one AprilTag was seen by the camera
+            for (var target : result.getTargets()) {
+                if (target.getFiducialId() == 7) {
+                    // Found Tag 7, record its information
+                    targetYaw = target.getYaw();
+                    targetSeen = true;
+                 }
+           }
+        }
+      }
+
   }
 
   @Override
