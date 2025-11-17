@@ -24,6 +24,7 @@ public final class Main
    */
   public static void main(String... args)
   {
+    System.out.println("Fidel was here");
     RobotBase.startRobot(Robot::new);
   }
 }

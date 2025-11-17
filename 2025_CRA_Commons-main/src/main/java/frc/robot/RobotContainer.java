@@ -96,6 +96,10 @@ public class RobotContainer
     SmartDashboard.putNumber("Wait Time", wait_seconds);
   }
 
+  public CommandXboxController getDriverController() {
+    return driverXbox;
+}
+
   private void configureBindings()
   {
     Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);

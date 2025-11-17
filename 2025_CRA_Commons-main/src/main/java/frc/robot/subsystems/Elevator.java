@@ -62,7 +62,7 @@
 //             .apply(leftMotorConfig)
 //             .follow(leftMotor, true);
 //         leftMotor.configure(leftMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-//         rightMotor.configure(rightMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters)
+//         rightMotor.configure(rightMotorConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 //     }
 
 //      public Command idle() {

@@ -8,9 +8,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import org.littletonrobotics.junction.LoggedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -21,6 +23,11 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.photonvision.PhotonCamera;
 
 public class Robot extends LoggedRobot {
+  private Command m_autonomousCommand;
+
+  private RobotContainer robotContainer;
+  private CommandXboxController controller;
+
   private Command exampleAuto;
   private RobotContainer theRobotContainer;
   private Timer disabledTimer;
@@ -30,11 +37,13 @@ public class Robot extends LoggedRobot {
 
   boolean targetSeen = false;
   double targetYaw = 0.0;
-
+  double targetRange = 0;
+  boolean isListEmpty = true;
 
   
   public void robotInit() {
     theRobotContainer = new RobotContainer();
+    controller = robotContainer.getDriverController();
     disabledTimer = new Timer(); //for turning off breaking when disabled
 
     if (isReal()) {
@@ -121,6 +130,18 @@ public class Robot extends LoggedRobot {
         }
       }
 
+      double forward = -controller.getLeftY() * Constants.kMaxLinearSpeed;
+      double strafe = -controller.getLeftX() * Constants.kMaxLinearSpeed;
+      double turn = -controller.getRightX() * Constants.kMaxAngularSpeed;
+
+
+
+    //  drivetrain.drive(forward, strafe, turn);
+
+  }
+
+  public boolean getTargetSeen(){
+    return targetSeen;
   }
 
   @Override
